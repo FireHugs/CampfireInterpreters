@@ -4,6 +4,14 @@ internal static class Program
 {
     static void Main(string[] args)
     {
+        ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../Scripts/Generated", "Expr", new List<string>
+        {
+            "Unary : Token op, Expr right",
+            "Binary : Expr left, Token op, Expr right",
+            "Grouping : Expr expression",
+            "Literal : Object value"
+        });
+        
         if (args.Length > 1)
         {
             Console.WriteLine("Usage: Campfire.TreeWalkInterpreter [script]");
