@@ -48,5 +48,5 @@ public enum TokenType
     Var,
     While,
     
-    Eof
+    EOF
 }

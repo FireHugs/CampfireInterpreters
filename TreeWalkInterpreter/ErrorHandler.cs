@@ -7,6 +7,14 @@ public static class ErrorHandler
         Report(line, "", message);
     }
 
+    public static void Error(Token token, string message)
+    {
+        if (token.Type == TokenType.EOF)
+        {
+            Report(token.Line, " at end", message);
+        }
+    }
+
     private static void Report(int line, string where, string message)
     {
         Console.WriteLine($"[line {line}] Error {where}: {message}");
