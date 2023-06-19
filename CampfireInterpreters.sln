@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeWalkInterpreter", "TreeWalkInterpreter\TreeWalkInterpreter.csproj", "{07CC4B0C-00D1-4A13-900E-4AA5433C829A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "campfire", "campfire\campfire.csproj", "{CF2D0F09-76EC-4729-BD81-65EA0904F493}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{07CC4B0C-00D1-4A13-900E-4AA5433C829A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07CC4B0C-00D1-4A13-900E-4AA5433C829A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07CC4B0C-00D1-4A13-900E-4AA5433C829A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF2D0F09-76EC-4729-BD81-65EA0904F493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF2D0F09-76EC-4729-BD81-65EA0904F493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF2D0F09-76EC-4729-BD81-65EA0904F493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF2D0F09-76EC-4729-BD81-65EA0904F493}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
