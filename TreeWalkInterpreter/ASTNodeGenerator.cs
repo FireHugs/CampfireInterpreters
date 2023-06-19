@@ -15,6 +15,8 @@ public static class ASTNodeDefinitionTextEmitGenerator
 
         using (var writer = new StreamWriter(path))
         {
+            writer.WriteLine("// This file is generated. Do not edit!");
+            writer.WriteLine();
             writer.WriteLine("using Campfire.TreeWalkInterpreter;");
             writer.WriteLine();
             writer.WriteLine($"abstract class {baseName} {{");
