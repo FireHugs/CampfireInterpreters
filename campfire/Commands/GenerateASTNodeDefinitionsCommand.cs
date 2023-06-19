@@ -16,10 +16,10 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
         
         ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Scripts/Generated", "Expr", new List<string>
         {
-            "Unary : Token op, Expr right",
-            "Binary : Expr left, Token op, Expr right",
-            "Grouping : Expr expression",
-            "Literal : Object value"
+            "Unary : Token Op, Expr Right",
+            "Binary : Expr Left, Token Op, Expr Right",
+            "Grouping : Expr Expression",
+            "Literal : Object Value"
         });
     }
 }

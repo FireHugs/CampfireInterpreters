@@ -26,7 +26,7 @@ public static class ASTNodeDefinitionTextEmitGenerator
         writer.WriteLine();
         writer.WriteLine("using Campfire.TreeWalkInterpreter;");
         writer.WriteLine();
-        writer.WriteLine($"abstract class {baseName} {{");
+        writer.WriteLine($"public abstract class {baseName} {{");
 
         DefineVisitor(writer, baseName, types);
         
@@ -64,7 +64,7 @@ public static class ASTNodeDefinitionTextEmitGenerator
         var fields = splitType[1].Trim();
                 
         //Class Definition
-        writer.WriteLine($"  class {className} : {baseName} {{");
+        writer.WriteLine($" public class {className} : {baseName} {{");
                 
         var splitFields = fields.Split(", ");
         foreach (var field in splitFields)
@@ -74,7 +74,7 @@ public static class ASTNodeDefinitionTextEmitGenerator
         writer.WriteLine();
                 
         //Constructor
-        writer.WriteLine($"    {className}({fields}){{");
+        writer.WriteLine($"    public {className}({fields}){{");
         foreach (var field in splitFields)
         {
             var name = field.Split(" ")[1]; 

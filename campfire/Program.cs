@@ -43,5 +43,6 @@ internal static class Program
     {
         commandList.Add(new GenerateASTNodeDefinitionsCommand());
         commandList.Add(new LexCommand());
+        commandList.Add(new TestASTCommand());
     }
 }
