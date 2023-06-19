@@ -2,7 +2,7 @@
 
 namespace Campfire.TreeWalkInterpreter;
 
-public class ManualLexer
+public class ManualLexer: ILexer
 {
     private string source;
     private List<Token> tokens;

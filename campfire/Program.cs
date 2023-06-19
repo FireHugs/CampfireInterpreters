@@ -42,5 +42,6 @@ internal static class Program
     private static void BuildCommandList()
     {
         commandList.Add(new GenerateASTNodeDefinitionsCommand());
+        commandList.Add(new LexCommand());
     }
 }
