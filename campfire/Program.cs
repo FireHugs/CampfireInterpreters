@@ -45,5 +45,6 @@ internal static class Program
         commandList.Add(new LexCommand());
         commandList.Add(new TestASTCommand());
         commandList.Add(new ParseCommand());
+        commandList.Add(new InterpretCommand());
     }
 }

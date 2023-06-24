@@ -15,6 +15,11 @@ public static class ErrorHandler
         }
     }
 
+    public static void RuntimeError(Interpreter.RuntimeError error)
+    {
+        Report(error.Token.Line, "", error.Message);
+    }
+
     private static void Report(int line, string where, string message)
     {
         Console.WriteLine($"[line {line}] Error {where}: {message}");
