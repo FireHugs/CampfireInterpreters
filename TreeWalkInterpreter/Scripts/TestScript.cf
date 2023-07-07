@@ -1,7 +1,13 @@
 ﻿var a = "global a";
+1+2;
+var b = 1+2;
 print a;
 {
 var a = "local a";
 print a;
 }
 print a;
+b;
+a=4;
+print a;
+print a=3;
