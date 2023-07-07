@@ -19,13 +19,15 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             "Unary : Token Op, Expr Right",
             "Binary : Expr Left, Token Op, Expr Right",
             "Grouping : Expr Expression",
-            "Literal : Object Value"
+            "Literal : Object Value",
+            "Variable : Token name"
         });
         
         ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Scripts/Generated", "Stmt", new List<string>
         {
             "Expression : Expr expression",
-            "Print : Expr expression"
+            "Print : Expr expression",
+            "Var : Token name, Expr initializer"
         });
     }
 }

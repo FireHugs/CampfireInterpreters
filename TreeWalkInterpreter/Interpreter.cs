@@ -91,6 +91,11 @@ public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
         return expr.Value;
     }
 
+    public object VisitVariableExpr(Variable expr)
+    {
+        throw new NotImplementedException();
+    }
+
     private Object Evaluate(Expr expression)
     {
         return expression.Accept(this);
@@ -162,6 +167,11 @@ public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
         var value = Evaluate(stmt.expression);
         Console.WriteLine(Stringify(value));
         return null;
+    }
+
+    public object VisitVarStmt(Var stmt)
+    {
+        throw new NotImplementedException();
     }
 
     public void Execute(Stmt statement)

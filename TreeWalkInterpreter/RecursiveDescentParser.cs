@@ -15,7 +15,7 @@ public class RecursiveDescentParser
         var statements = new List<Stmt>();
         while (!IsAtEnd())
         {
-            statements.Add(ParseStatement());
+            statements.Add(ParseDeclaration());
         }
 
         return statements;
@@ -144,6 +144,11 @@ public class RecursiveDescentParser
             return new Literal(Previous().Literal);
         }
 
+        if (Match(TokenType.Identifier))
+        {
+            return new Variable(Previous());
+        }
+
         if (Match(TokenType.LeftParen))
         {
             var expression = ParseExpression();
@@ -208,6 +213,34 @@ public class RecursiveDescentParser
         var expression = ParseExpression();
         Consume(TokenType.Semicolon, "Expect ; after expression.");
         return new Expression(expression);
+    }
+
+    private Stmt ParseDeclaration()
+    {
+        try
+        {
+            if (Match(TokenType.Var)) return ParseVarDeclaration();
+            return ParseStatement();
+        }
+        catch (ParseError e)
+        {
+            Synchronize();
+            return null;
+        }
+    }
+
+    private Stmt ParseVarDeclaration()
+    {
+        var name = Consume(TokenType.Identifier, "Expect variable name.");
+
+        Expr initializer = null;
+        if (Match(TokenType.Equal))
+        {
+            initializer = ParseExpression();
+        }
+
+        Consume(TokenType.Semicolon, "Expect ; after variable declaration.");
+        return new Var(name, initializer);
     }
 
     private class ParseError : Exception { }

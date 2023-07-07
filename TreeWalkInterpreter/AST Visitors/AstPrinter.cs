@@ -30,6 +30,11 @@ public class AstPrinter: Expr.Visitor<string>
         return expr.Value.ToString();
     }
 
+    public string VisitVariableExpr(Variable expr)
+    {
+        throw new NotImplementedException();
+    }
+
     private string parenthesize(string name, params Expr[] expressions)
     {
         var builder = new StringBuilder();
