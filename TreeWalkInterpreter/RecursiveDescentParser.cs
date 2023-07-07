@@ -246,15 +246,7 @@ public class RecursiveDescentParser
     {
         var expression = ParseExpression();
         Consume(TokenType.Semicolon, "Expect ; after expression.");
-
-        if (expression is Assign)
-        {
-            return new Expression(expression);    
-        }
-        else
-        {
-            return new Print(expression);
-        }
+        return new Expression(expression);
     }
 
     private Stmt ParseDeclaration()

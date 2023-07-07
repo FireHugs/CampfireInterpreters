@@ -10,7 +10,11 @@ public partial class Interpreter: Stmt.Visitor<object>
 
     public object VisitExpressionStmt(Expression stmt)
     {
-        EvaluateExpression(stmt.expression);
+        var value = EvaluateExpression(stmt.expression);
+        if (stmt.expression is not Assign)
+        {
+            Console.WriteLine(Stringify(value));
+        }
         return null;
     }
 
