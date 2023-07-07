@@ -14,8 +14,6 @@ public class ParseCommand: ICommand
         if (exitCode == MessageHandler.ExitCodes.Successful)
         {
             var parser = new RecursiveDescentParser(tokens);
-            var expression = parser.Parse();
-            Console.WriteLine(new AstPrinter().Print(expression));
         }    
     }
 }

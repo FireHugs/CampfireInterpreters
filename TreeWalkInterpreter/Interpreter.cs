@@ -2,14 +2,16 @@
 
 namespace Campfire.TreeWalkInterpreter;
 
-public class Interpreter: Expr.Visitor<Object>
+public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
 {
-    public void Interpret(Expr expression)
+    public void Interpret(List<Stmt> statements)
     {
         try
         {
-            var value = Evaluate(expression);
-            Console.WriteLine("Result: " + Stringify(value));
+            foreach(var statement in statements)
+            {
+                Execute(statement);
+            }
         }
         catch (RuntimeError e)
         {
@@ -148,5 +150,22 @@ public class Interpreter: Expr.Visitor<Object>
             Message = message;
         }
     }
-    
+
+    public object VisitExpressionStmt(Expression stmt)
+    {
+        Evaluate(stmt.expression);
+        return null;
+    }
+
+    public object VisitPrintStmt(Print stmt)
+    {
+        var value = Evaluate(stmt.expression);
+        Console.WriteLine(Stringify(value));
+        return null;
+    }
+
+    public void Execute(Stmt statement)
+    {
+        statement.Accept(this);
+    }
 }

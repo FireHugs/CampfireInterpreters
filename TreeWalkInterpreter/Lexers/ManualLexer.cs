@@ -25,6 +25,8 @@ public class ManualLexer: ILexer
             lexStart = lexCurrent;
             ScanToken();
         }
+        
+        tokens.Add(new Token(TokenType.EOF, "", null, lexLine));
 
         return tokens;
     }

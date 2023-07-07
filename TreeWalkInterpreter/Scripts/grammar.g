@@ -1,4 +1,8 @@
-﻿expression -> equality ; 
+﻿program -> statement* EOF;
+statement -> exprStatement | printstmt;
+exprStatement -> expression ";";
+printStatement -> "print" expression ";";
+expression -> equality ; 
 equality -> comparison ( ( "!=" | "==" ) comparison )* ; 
 comparison -> term ( ( ">" | ">=" | "<" | "<=" ) term)* ;
 term -> factor ( ( "-" | "+" ) factor )* ;

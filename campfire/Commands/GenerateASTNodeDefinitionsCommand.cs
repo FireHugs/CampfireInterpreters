@@ -21,5 +21,11 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             "Grouping : Expr Expression",
             "Literal : Object Value"
         });
+        
+        ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Scripts/Generated", "Stmt", new List<string>
+        {
+            "Expression : Expr expression",
+            "Print : Expr expression"
+        });
     }
 }

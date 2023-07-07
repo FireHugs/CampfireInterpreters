@@ -14,14 +14,10 @@ public class InterpretCommand: ICommand
         if (exitCode == MessageHandler.ExitCodes.Successful)
         {
             var parser = new RecursiveDescentParser(tokens);
-            var expression = parser.Parse();
-
-            Console.WriteLine("Expression: " + new AstPrinter().Print(expression));
+            var statements = parser.Parse();
             
             var interpreter = new Interpreter();
-            interpreter.Interpret(expression);
-            
-            
+            interpreter.Interpret(statements);
         }    
     }
 }

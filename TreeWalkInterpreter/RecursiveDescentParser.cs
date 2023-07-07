@@ -10,16 +10,15 @@ public class RecursiveDescentParser
         this.tokens = tokens;
     }
 
-    public Expr Parse()
+    public List<Stmt> Parse()
     {
-        try
+        var statements = new List<Stmt>();
+        while (!IsAtEnd())
         {
-            return ParseExpression();
+            statements.Add(ParseStatement());
         }
-        catch (ParseError error)
-        {
-            return null;
-        }
+
+        return statements;
     }
 
     private Expr ParseExpression()
@@ -189,6 +188,26 @@ public class RecursiveDescentParser
 
             Advance();
         }
+    }
+
+    private Stmt ParseStatement()
+    {
+        if (Match(TokenType.Print)) return ParsePrintStatement();
+        return ParseExpressionStatement();
+    }
+
+    private Stmt ParsePrintStatement()
+    {
+        var value = ParseExpression();
+        Consume(TokenType.Semicolon, "Expect ; after value.");
+        return new Print(value);
+    }
+
+    private Stmt ParseExpressionStatement()
+    {
+        var expression = ParseExpression();
+        Consume(TokenType.Semicolon, "Expect ; after expression.");
+        return new Expression(expression);
     }
 
     private class ParseError : Exception { }
