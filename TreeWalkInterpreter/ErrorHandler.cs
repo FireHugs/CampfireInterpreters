@@ -15,7 +15,7 @@ public static class ErrorHandler
         }
     }
 
-    public static void RuntimeError(Interpreter.RuntimeError error)
+    public static void RuntimeError(RuntimeError error)
     {
         Report(error.Token.Line, "", error.Message);
     }

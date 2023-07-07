@@ -41,6 +41,6 @@ public class Environment
             return enclosingEnvironment.GetTokenValue(name);
         }
 
-        throw new Interpreter.RuntimeError(name, $"Undefined variable {name.Lexeme}.");
+        throw new RuntimeError(name, $"Undefined variable {name.Lexeme}.");
     }
 }
