@@ -165,6 +165,12 @@ public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
         }
     }
 
+    public object VisitBlockStmt(Block stmt)
+    {
+        ExecuteBlock(stmt.statements, new Environment(environment));
+        return null;
+    }
+
     public object VisitExpressionStmt(Expression stmt)
     {
         Evaluate(stmt.expression);
@@ -193,5 +199,27 @@ public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
     public void Execute(Stmt statement)
     {
         statement.Accept(this);
+    }
+
+    private void ExecuteBlock(List<Stmt> statements, Environment environment)
+    {
+        var previous = this.environment;
+        try
+        {
+            this.environment = environment;
+            foreach (var statement in statements)
+            {
+                Execute(statement);
+            }
+        }
+        catch (RuntimeError e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        finally
+        {
+            this.environment = previous;
+        }
     }
 }

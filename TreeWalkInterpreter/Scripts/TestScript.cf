@@ -1,7 +1,7 @@
-﻿print "one";
-var fart = 1;
-var derp = 2;
-print fart+derp;
-derp = 4;
-print fart+derp;
-print 2+1;
+﻿var a = "global a";
+print a;
+{
+var a = "local a";
+print a;
+}
+print a;

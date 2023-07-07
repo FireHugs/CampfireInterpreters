@@ -26,6 +26,7 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
         
         ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Scripts/Generated", "Stmt", new List<string>
         {
+            "Block : List<Stmt> statements",
             "Expression : Expr expression",
             "Print : Expr expression",
             "Var : Token name, Expr initializer"

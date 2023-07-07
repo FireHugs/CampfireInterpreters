@@ -219,7 +219,20 @@ public class RecursiveDescentParser
     private Stmt ParseStatement()
     {
         if (Match(TokenType.Print)) return ParsePrintStatement();
+        if (Match(TokenType.LeftBrace)) return new Block(ParseBlock());
         return ParseExpressionStatement();
+    }
+
+    private List<Stmt> ParseBlock()
+    {
+        var statements = new List<Stmt>();
+        while (!Check(TokenType.RightBrace) && !IsAtEnd())
+        {
+            statements.Add(ParseDeclaration());
+        }
+
+        Consume(TokenType.RightBrace, "Expect } after block.");
+        return statements;
     }
 
     private Stmt ParsePrintStatement()
