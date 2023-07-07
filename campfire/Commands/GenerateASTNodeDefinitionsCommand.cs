@@ -16,6 +16,7 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
         
         ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Scripts/Generated", "Expr", new List<string>
         {
+            "Assign : Token name, Expr value",
             "Unary : Token Op, Expr Right",
             "Binary : Expr Left, Token Op, Expr Right",
             "Grouping : Expr Expression",

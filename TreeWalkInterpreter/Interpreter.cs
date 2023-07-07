@@ -4,6 +4,8 @@ namespace Campfire.TreeWalkInterpreter;
 
 public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
 {
+    private Environment environment = new Environment();
+    
     public void Interpret(List<Stmt> statements)
     {
         try
@@ -19,7 +21,14 @@ public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
             throw;
         }
     }
-    
+
+    public object VisitAssignExpr(Assign expr)
+    {
+        var value = Evaluate(expr.value);
+        environment.AssignTokenValue(expr.name, value);
+        return value;
+    }
+
     public object VisitUnaryExpr(Unary expr)
     {
         var right = Evaluate(expr.Right);
@@ -93,7 +102,7 @@ public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
 
     public object VisitVariableExpr(Variable expr)
     {
-        throw new NotImplementedException();
+        return environment.GetTokenValue(expr.name);
     }
 
     private Object Evaluate(Expr expression)
@@ -171,7 +180,14 @@ public class Interpreter: Expr.Visitor<object>, Stmt.Visitor<object>
 
     public object VisitVarStmt(Var stmt)
     {
-        throw new NotImplementedException();
+        object value = null;
+        if (stmt.initializer != null)
+        {
+            value = Evaluate(stmt.initializer);
+        }
+        
+        environment.Define(stmt.name.Lexeme, value);
+        return null;
     }
 
     public void Execute(Stmt statement)

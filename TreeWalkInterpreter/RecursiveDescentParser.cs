@@ -23,7 +23,28 @@ public class RecursiveDescentParser
 
     private Expr ParseExpression()
     {
-        return ParseEquality();
+        return ParseAssignment();
+    }
+
+    private Expr ParseAssignment()
+    {
+        var expression = ParseEquality();
+
+        if (Match(TokenType.Equal))
+        {
+            var equals = Previous();
+            var value = ParseAssignment();
+
+            if (expression is Variable)
+            {
+                var name = ((Variable)expression).name;
+                return new Assign(name, value);
+            }
+            
+            ErrorHandler.Error(equals, "Invalid assignment target.");
+        }
+
+        return expression;
     }
 
     private Expr ParseEquality()
