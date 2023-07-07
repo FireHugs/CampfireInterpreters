@@ -2,7 +2,33 @@
 
 public class Environment
 {
-    private readonly Dictionary<string, object> values = new();
+    private class ValueEntry
+    {
+        private object value;
+
+        public object Value
+        {
+            get => value;
+            set
+            {
+                this.value = value;
+                IsInitialized = true;
+            }
+        }
+
+        public bool IsInitialized
+        {
+            get;
+            private set;
+        }
+
+        public void Reset()
+        {
+            IsInitialized = false;
+        }
+    }
+    
+    private readonly Dictionary<string, ValueEntry> values = new();
     private readonly Environment? enclosingEnvironment;
 
     public Environment(Environment? enclosingEnvironment = null)
@@ -10,16 +36,33 @@ public class Environment
         this.enclosingEnvironment = enclosingEnvironment;
     }
 
+    public void Declare(string name)
+    {
+        if (values.ContainsKey(name))
+        {
+            values[name].Reset();
+        }
+        else
+        {
+            values[name] = new ValueEntry();
+        }
+    }
+    
     public void Define(string name, object value)
     {
-        values[name] = value;
+        if (!values.ContainsKey(name))
+        {
+            values[name] = new ValueEntry();
+        }
+        values[name].Value = value;
     }
 
     public void AssignTokenValue(Token name, object value)
     {
         if (values.ContainsKey(name.Lexeme))
         {
-            values[name.Lexeme] = value;
+            values[name.Lexeme].Value = value;
+            return;
         }
 
         if (enclosingEnvironment != null)
@@ -27,13 +70,19 @@ public class Environment
             enclosingEnvironment.AssignTokenValue(name, value);
             return;
         }
+        
+        throw new RuntimeError(name, $"Undefined variable {name.Lexeme}.");
     }
 
     public object GetTokenValue(Token name)
     {
         if (values.ContainsKey(name.Lexeme))
         {
-            return values[name.Lexeme];
+            if (!values[name.Lexeme].IsInitialized)
+            {
+                throw new RuntimeError(name, $"Accessing unassigned variable {name.Lexeme}.");        
+            }
+            return values[name.Lexeme].Value;
         }
         
         if (enclosingEnvironment != null)

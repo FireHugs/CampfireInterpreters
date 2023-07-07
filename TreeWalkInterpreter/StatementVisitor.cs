@@ -27,13 +27,15 @@ public partial class Interpreter: Stmt.Visitor<object>
 
     public object VisitVarStmt(Var stmt)
     {
-        object value = null;
         if (stmt.initializer != null)
         {
-            value = EvaluateExpression(stmt.initializer);
+            environment.Define(stmt.name.Lexeme, EvaluateExpression(stmt.initializer));
         }
-        
-        environment.Define(stmt.name.Lexeme, value);
+        else
+        {
+            environment.Declare(stmt.name.Lexeme);
+        }
+
         return null;
     }
     
