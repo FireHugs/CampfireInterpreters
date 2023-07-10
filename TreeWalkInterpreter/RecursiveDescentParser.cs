@@ -178,8 +178,48 @@ public class RecursiveDescentParser
             var right = ParseUnary();
             return new Unary(op, right);
         }
+        
+        return ParseCall();
+    }
 
-        return ParsePrimary();
+    private Expr ParseCall()
+    {
+        var expression = ParsePrimary();
+
+        while (true)
+        {
+            if (Match(TokenType.LeftParen))
+            {
+                expression = FinishCall(expression);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return expression;
+    }
+
+    private Expr FinishCall(Expr callee)
+    {
+        var arguments = new List<Expr>();
+        if (!Check(TokenType.RightParen))
+        {
+            do
+            {
+                if (arguments.Count > 255)
+                {
+                    ErrorHandler.Error(Peek(), "Can't have more than 255 arguments.");
+                }
+                arguments.Add(ParseExpression());
+            } while (Match(TokenType.Comma));
+        }
+
+        Token paren = Consume(TokenType.RightParen, "Expect ')' after arguments.");
+
+        return new Call(callee, paren, arguments);
+
     }
 
     private Expr ParsePrimary()
@@ -361,6 +401,7 @@ public class RecursiveDescentParser
     {
         try
         {
+            if (Match(TokenType.Fun)) return ParseFunctionDeclaration("function");
             if (Match(TokenType.Var)) return ParseVarDeclaration();
             return ParseStatement();
         }
@@ -369,6 +410,29 @@ public class RecursiveDescentParser
             Synchronize();
             return null;
         }
+    }
+
+    private Stmt ParseFunctionDeclaration(string kind)
+    {
+        var name = Consume(TokenType.Identifier, $"Expect {kind} name");
+        Consume(TokenType.LeftParen, $"Expect '(' after {kind} name.");
+        var parameters = new List<Token>();
+        if (!Check(TokenType.RightParen))
+        {
+            do
+            {
+                if (parameters.Count >= 255)
+                {
+                    ErrorHandler.Error(Peek(), "Can't have more than 255 parameters.");
+                }
+                parameters.Add(Consume(TokenType.Identifier, "Expect parameter name."));
+            } while (Match(TokenType.Comma));
+        }
+        Consume(TokenType.RightParen, "Expect ')' after parameters.");
+        Consume(TokenType.LeftBrace, $"Expect '{{' before {kind} body");
+        
+        var body = ParseBlock();
+        return new Function(name, parameters, body);
     }
 
     private Stmt ParseVarDeclaration()

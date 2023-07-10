@@ -19,6 +19,7 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             "Assign : Token name, Expr value",
             "Unary : Token Op, Expr Right",
             "Binary : Expr Left, Token Op, Expr Right",
+            "Call : Expr callee, Token paren, List<Expr> arguments",
             "Grouping : Expr Expression",
             "Literal : Object Value",
             "Logical : Expr left, Token Op, Expr right",
@@ -29,6 +30,7 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
         {
             "Block : List<Stmt> statements",
             "Expression : Expr expression",
+            "Function : Token name, List<Token> parameters, List<Stmt> body",
             "If : Expr condition, Stmt thenBranch, Stmt elseBranch", 
             "Print : Expr expression",
             "Var : Token name, Expr initializer",

@@ -1,8 +1,16 @@
-﻿namespace Campfire.TreeWalkInterpreter;
+﻿using Campfire.TreeWalkInterpreter.Native_Functions;
+namespace Campfire.TreeWalkInterpreter;
 
 public partial class Interpreter
 {
-    private Environment environment = new();
+    public Environment Globals => new();
+    private Environment environment;
+
+    public Interpreter()
+    {
+        environment = Globals;
+        Globals.Define("clock", new ClockFunction());
+    }
     
     public void Interpret(List<Stmt> statements)
     {
@@ -25,7 +33,7 @@ public partial class Interpreter
         statement.Accept(this);
     }
 
-    private void ExecuteBlock(List<Stmt> statements, Environment environment)
+    public void ExecuteBlock(List<Stmt> statements, Environment environment)
     {
         var previous = this.environment;
         try

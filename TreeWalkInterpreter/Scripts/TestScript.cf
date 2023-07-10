@@ -1,10 +1,5 @@
-﻿var c = 1;
-while (c < 3) {
-    print c = c + 1;
+﻿fun sum(a, b) 
+{ 
+    print a+b;
 }
-print c;
-
-for(var a = 0; a < 4; a = a + 1)
-{
-    print a;
-}
+sum(1,2);

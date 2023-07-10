@@ -72,6 +72,29 @@ public partial class Interpreter: Expr.Visitor<object>
         throw new RuntimeError(expr.Op, "Unsupported operator");
     }
 
+    public object VisitCallExpr(Call expr)
+    {
+        var callee = EvaluateExpression(expr.callee);
+
+        var arguments = new List<object>();
+        foreach (var argument in expr.arguments)
+        {
+            arguments.Add(EvaluateExpression(argument));
+        }
+
+        if (callee is not ICallable function)
+        {
+            throw new RuntimeError(expr.paren, "Can only call functions and classes.");
+        }
+
+        if (arguments.Count != function.Arity)
+        {
+            throw new RuntimeError(expr.paren, $"Expected {function.Arity} arguments but got {arguments.Count}.");
+        }
+
+        return function.Call(this, arguments);
+    }
+
     public object VisitGroupingExpr(Grouping expr)
     {
         return EvaluateExpression(expr.Expression);

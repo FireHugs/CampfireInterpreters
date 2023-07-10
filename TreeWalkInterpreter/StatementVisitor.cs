@@ -11,10 +11,18 @@ public partial class Interpreter: Stmt.Visitor<object>
     public object VisitExpressionStmt(Expression stmt)
     {
         var value = EvaluateExpression(stmt.expression);
-        if (stmt.expression is not Assign)
+        if (stmt.expression is not Assign && 
+            stmt.expression is not Call)
         {
             Console.WriteLine(Stringify(value));
         }
+        return null;
+    }
+
+    public object VisitFunctionStmt(Function stmt)
+    {
+        var function = new UserFunction(stmt);
+        environment.Define(stmt.name.Lexeme, function);
         return null;
     }
 

@@ -24,6 +24,11 @@ public class AstPrinter: Expr.Visitor<string>
         return parenthesize(expr.Op.Lexeme, expr.Left, expr.Right);
     }
 
+    public string VisitCallExpr(Call expr)
+    {
+        throw new NotImplementedException();
+    }
+
     public string VisitGroupingExpr(Grouping expr)
     {
         return parenthesize("group", expr.Expression);
