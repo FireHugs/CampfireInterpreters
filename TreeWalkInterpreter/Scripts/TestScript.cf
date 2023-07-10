@@ -1,8 +1,7 @@
-﻿var a = 1;
+﻿
+print "true" or 1;
+var c = 1;
+if(2+1==4 and c == 1)
 {
-var a = a + 2;
-
-
-
-print a;
-}
+print "Eat shit";
+} 

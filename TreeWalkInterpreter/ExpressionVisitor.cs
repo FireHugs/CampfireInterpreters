@@ -1,4 +1,6 @@
-﻿namespace Campfire.TreeWalkInterpreter;
+﻿using System.Diagnostics;
+
+namespace Campfire.TreeWalkInterpreter;
 
 public partial class Interpreter: Expr.Visitor<object>
 {
@@ -78,6 +80,22 @@ public partial class Interpreter: Expr.Visitor<object>
     public object VisitLiteralExpr(Literal expr)
     {
         return expr.Value;
+    }
+
+    public object VisitLogicalExpr(Logical expr)
+    {
+        var left = EvaluateExpression(expr.left);
+
+        if (expr.Op.Type == TokenType.Or)
+        {
+            if (IsTruthy(left)) return left;
+        }
+        else
+        {
+            if (!IsTruthy(left)) return left;
+        }
+
+        return EvaluateExpression(expr.right);
     }
 
     public object VisitVariableExpr(Variable expr)

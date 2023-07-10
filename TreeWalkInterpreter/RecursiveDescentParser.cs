@@ -28,7 +28,7 @@ public class RecursiveDescentParser
 
     private Expr ParseAssignment()
     {
-        var expression = ParseEquality();
+        var expression = ParseOr();
 
         if (Match(TokenType.Equal))
         {
@@ -44,6 +44,34 @@ public class RecursiveDescentParser
             ErrorHandler.Error(equals, "Invalid assignment target.");
         }
 
+        return expression;
+    }
+
+    private Expr ParseOr()
+    {
+        var expression = ParseAnd();
+
+        while (Match(TokenType.Or))
+        {
+            var op = Previous();
+            var right = ParseAnd();
+            expression = new Logical(expression, op, right);
+        }
+
+        return expression;
+    }
+
+    private Expr ParseAnd()
+    {
+        var expression = ParseEquality();
+
+        while (Match(TokenType.And))
+        {
+            var op = Previous();
+            var right = ParseEquality();
+            expression = new Logical(expression, op, right);
+        }
+        
         return expression;
     }
 

@@ -21,6 +21,7 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             "Binary : Expr Left, Token Op, Expr Right",
             "Grouping : Expr Expression",
             "Literal : Object Value",
+            "Logical : Expr left, Token Op, Expr right",
             "Variable : Token name"
         });
         

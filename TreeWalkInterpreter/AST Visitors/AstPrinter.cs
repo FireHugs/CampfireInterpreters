@@ -35,6 +35,11 @@ public class AstPrinter: Expr.Visitor<string>
         return expr.Value.ToString();
     }
 
+    public string VisitLogicalExpr(Logical expr)
+    {
+        throw new NotImplementedException();
+    }
+
     public string VisitVariableExpr(Variable expr)
     {
         throw new NotImplementedException();
