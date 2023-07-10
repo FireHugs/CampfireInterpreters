@@ -218,6 +218,7 @@ public class RecursiveDescentParser
 
     private Stmt ParseStatement()
     {
+        if (Match(TokenType.If)) return ParseIfStatement();
         if (Match(TokenType.Print)) return ParsePrintStatement();
         if (Match(TokenType.LeftBrace)) return new Block(ParseBlock());
         return ParseExpressionStatement();
@@ -233,6 +234,22 @@ public class RecursiveDescentParser
 
         Consume(TokenType.RightBrace, "Expect } after block.");
         return statements;
+    }
+
+    private Stmt ParseIfStatement()
+    {
+        Consume(TokenType.LeftParen, "Expect '(' after 'if'.");
+        var condition = ParseExpression();
+        Consume(TokenType.RightParen, "Expect ')' after if condition.");
+
+        var thenBranch = ParseStatement();
+        Stmt elseBranch = null;
+        if (Match(TokenType.Else))
+        {
+            elseBranch = ParseStatement();
+        }
+
+        return new If(condition, thenBranch, elseBranch);
     }
 
     private Stmt ParsePrintStatement()

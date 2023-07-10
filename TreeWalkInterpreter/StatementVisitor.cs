@@ -18,6 +18,19 @@ public partial class Interpreter: Stmt.Visitor<object>
         return null;
     }
 
+    public object VisitIfStmt(If stmt)
+    {
+        if (IsTruthy(EvaluateExpression(stmt.condition)))
+        {
+            Execute(stmt.thenBranch);
+        }
+        else if (stmt.elseBranch != null)
+        {
+            Execute(stmt.elseBranch);
+        }
+        return null;
+    }
+
     public object VisitPrintStmt(Print stmt)
     {
         var value = EvaluateExpression(stmt.expression);
