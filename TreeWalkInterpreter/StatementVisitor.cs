@@ -51,7 +51,17 @@ public partial class Interpreter: Stmt.Visitor<object>
 
         return null;
     }
-    
+
+    public object VisitWhileStmt(While stmt)
+    {
+        while (IsTruthy(EvaluateExpression(stmt.condition)))
+        {
+            Execute(stmt.body);
+        }
+
+        return null;
+    }
+
     private string Stringify(object obj)
     {
         if (obj == null) return "nil";

@@ -246,8 +246,10 @@ public class RecursiveDescentParser
 
     private Stmt ParseStatement()
     {
+        if (Match(TokenType.For)) return ParseForStatement();
         if (Match(TokenType.If)) return ParseIfStatement();
         if (Match(TokenType.Print)) return ParsePrintStatement();
+        if (Match(TokenType.While)) return ParseWhileStatement();
         if (Match(TokenType.LeftBrace)) return new Block(ParseBlock());
         return ParseExpressionStatement();
     }
@@ -262,6 +264,57 @@ public class RecursiveDescentParser
 
         Consume(TokenType.RightBrace, "Expect } after block.");
         return statements;
+    }
+
+    private Stmt ParseForStatement()
+    {
+        Consume(TokenType.LeftParen, "Expect '(' after 'for'.");
+
+        Stmt initializer;
+        if (Match(TokenType.Semicolon))
+        {
+            initializer = null;
+        }
+        else if(Match(TokenType.Var))
+        {
+            initializer = ParseVarDeclaration();
+        }
+        else
+        {
+            initializer = ParseExpressionStatement();
+        }
+
+        Expr condition = null;
+        if (!Check(TokenType.Semicolon))
+        {
+            condition = ParseExpression();
+        }
+
+        Consume(TokenType.Semicolon, "Expect ';' after loop condition");
+
+        Expr increment = null;
+        if(!Check(TokenType.RightParen))
+        {
+            increment = ParseExpression();
+        }
+        Consume(TokenType.RightParen, "Expect ')' after for clauses");
+
+        Stmt body = ParseStatement();
+
+        if (increment != null)
+        {
+            body = new Block(new List<Stmt> { body, new Expression(increment)});
+        }
+
+        if (condition == null) condition = new Literal(true);
+        body = new While(condition, body);
+
+        if (initializer != null)
+        {
+            body = new Block(new List<Stmt> { initializer, body });
+        }
+
+        return body;
     }
 
     private Stmt ParseIfStatement()
@@ -285,6 +338,16 @@ public class RecursiveDescentParser
         var value = ParseExpression();
         Consume(TokenType.Semicolon, "Expect ; after value.");
         return new Print(value);
+    }
+
+    private Stmt ParseWhileStatement()
+    {
+        Consume(TokenType.LeftParen, "Expect '(' after 'while'.");
+        var condition = ParseExpression();
+        Consume(TokenType.RightParen, "Expect ')' after condition.");
+        var body = ParseStatement();
+
+        return new While(condition, body);
     }
 
     private Stmt ParseExpressionStatement()
