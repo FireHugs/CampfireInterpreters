@@ -46,6 +46,15 @@ public partial class Interpreter: Stmt.Visitor<object>
         return null;
     }
 
+    public object VisitReturnStatementStmt(ReturnStatement stmt)
+    {
+        object value = null;
+        if (stmt.value != null) 
+            value = EvaluateExpression(stmt.value);
+
+        throw new Return(value);
+    }
+
     public object VisitVarStmt(Var stmt)
     {
         if (stmt.initializer != null)
@@ -70,7 +79,7 @@ public partial class Interpreter: Stmt.Visitor<object>
         return null;
     }
 
-    private string Stringify(object obj)
+    public string Stringify(object obj)
     {
         if (obj == null) return "nil";
         if (obj is double)

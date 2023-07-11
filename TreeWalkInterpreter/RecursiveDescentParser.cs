@@ -289,6 +289,7 @@ public class RecursiveDescentParser
         if (Match(TokenType.For)) return ParseForStatement();
         if (Match(TokenType.If)) return ParseIfStatement();
         if (Match(TokenType.Print)) return ParsePrintStatement();
+        if (Match(TokenType.Return)) return ParseReturnStatement();
         if (Match(TokenType.While)) return ParseWhileStatement();
         if (Match(TokenType.LeftBrace)) return new Block(ParseBlock());
         return ParseExpressionStatement();
@@ -378,6 +379,19 @@ public class RecursiveDescentParser
         var value = ParseExpression();
         Consume(TokenType.Semicolon, "Expect ; after value.");
         return new Print(value);
+    }
+
+    private Stmt ParseReturnStatement()
+    {
+        var keyword = Previous();
+        Expr value = null;
+        if (!Check(TokenType.Semicolon))
+        {
+            value = ParseExpression();
+        }
+
+        Consume(TokenType.Semicolon, "Expect ';' after return value.");
+        return new ReturnStatement(keyword, value);
     }
 
     private Stmt ParseWhileStatement()

@@ -3,13 +3,14 @@ namespace Campfire.TreeWalkInterpreter;
 
 public partial class Interpreter
 {
-    public Environment Globals => new();
+    public Environment globals;
     private Environment environment;
 
     public Interpreter()
     {
-        environment = Globals;
-        Globals.Define("clock", new ClockFunction());
+        globals = new Environment();
+        environment = globals;
+        globals.Define("clock", new ClockFunction());
     }
     
     public void Interpret(List<Stmt> statements)

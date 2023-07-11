@@ -11,13 +11,21 @@ public class UserFunction: ICallable
     
     public object Call(Interpreter interpreter, List<object> arguments)
     {
-        var environment = new Environment(interpreter.Globals);
+        var environment = new Environment(interpreter.globals);
         for(int i=0; i < declaration.parameters.Count; i++)
         {
             environment.Define(declaration.parameters[i].Lexeme, arguments[i]);
         }
+
+        try
+        {
+            interpreter.ExecuteBlock(declaration.body, environment);
+        }
+        catch (Return returnValue)
+        {
+            return returnValue.Value;
+        }
         
-        interpreter.ExecuteBlock(declaration.body, environment);
         return null;
     }
 
