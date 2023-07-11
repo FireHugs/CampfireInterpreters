@@ -21,7 +21,7 @@ public partial class Interpreter: Stmt.Visitor<object>
 
     public object VisitFunctionStmt(Function stmt)
     {
-        var function = new UserFunction(stmt);
+        var function = new UserFunction(stmt, environment);
         environment.Define(stmt.name.Lexeme, function);
         return null;
     }
