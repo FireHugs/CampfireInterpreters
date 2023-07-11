@@ -11,9 +11,18 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         Function,
         Method
     }
+
+    private enum ClassType
+    {
+        None,
+        Class
+    }
+    
     private readonly Interpreter interpreter;
     private Stack<Dictionary<string, bool>> scopes;
-    private FunctionType currentFunctionType = FunctionType.None;  
+    
+    private FunctionType currentFunctionType = FunctionType.None;
+    private ClassType currentClassType = ClassType.None;
 
     public Resolver(Interpreter interpreter)
     {
@@ -86,6 +95,11 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
 
     public object VisitThisExpr(This expr)
     {
+        if (currentClassType == ClassType.None)
+        {
+            ErrorHandler.Error(expr.keyword, "Can't use 'this' outside of a class.");    
+        }
+        
         ResolveLocal(expr, expr.keyword);
         return null;
     }
@@ -111,6 +125,9 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
 
     public object VisitClassStmt(Class stmt)
     {
+        ClassType enclosingClassType = currentClassType;
+        currentClassType = ClassType.Class;
+        
         Declare(stmt.name);
         Define(stmt.name);
         
@@ -124,6 +141,8 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         }
         
         EndScope();
+
+        currentClassType = enclosingClassType;
         
         return null;
     }
