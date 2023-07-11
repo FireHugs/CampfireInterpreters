@@ -26,7 +26,7 @@ public partial class Interpreter
         }
         catch (RuntimeError e)
         {
-            Console.WriteLine(e);
+            ErrorHandler.RuntimeError(e);
             throw;
         }
     }
@@ -49,7 +49,7 @@ public partial class Interpreter
         }
         catch (RuntimeError e)
         {
-            Console.WriteLine(e);
+            ErrorHandler.RuntimeError(e);
             throw;
         }
         finally

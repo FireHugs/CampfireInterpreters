@@ -2,17 +2,18 @@
 
 public static class ErrorHandler
 {
+    public static bool HadError { get; private set; }
+    
     public static void Error(int line, string message)
     {
+        HadError = true;
         Report(line, "", message);
     }
 
     public static void Error(Token token, string message)
     {
-        if (token.Type == TokenType.EOF)
-        {
-            Report(token.Line, " at end", message);
-        }
+        HadError = true;
+        Report(token.Line, token.Type == TokenType.EOF ? " at end" : "", message);
     }
 
     public static void RuntimeError(RuntimeError error)

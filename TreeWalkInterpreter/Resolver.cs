@@ -4,8 +4,14 @@ namespace Campfire.TreeWalkInterpreter;
 
 public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
 {
+    private enum FunctionType
+    {
+        None, 
+        Function
+    }
     private readonly Interpreter interpreter;
     private Stack<Dictionary<string, bool>> scopes;
+    private FunctionType currentFunctionType = FunctionType.None;  
 
     public Resolver(Interpreter interpreter)
     {
@@ -92,7 +98,7 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
     {
         Declare(stmt.name);
         Define(stmt.name);
-        ResolveFunction(stmt);
+        ResolveFunction(stmt, FunctionType.Function);
         return null;
     }
 
@@ -113,6 +119,11 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
 
     public object VisitReturnStatementStmt(ReturnStatement stmt)
     {
+        if (currentFunctionType == FunctionType.None)
+        {
+            ErrorHandler.Error(stmt.keyword, "Can't return from top-level code");
+        }
+        
         if (stmt.value != null)
         {
             Resolve(stmt.value);
@@ -169,8 +180,11 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         }
     }
 
-    private void ResolveFunction(Function function)
+    private void ResolveFunction(Function function, FunctionType functionType)
     {
+        FunctionType enclosingFunctionType = currentFunctionType;
+        currentFunctionType = functionType;
+        
         BeginScope();
         foreach (var param in function.parameters)
         {
@@ -179,6 +193,8 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         }
         Resolve(function.body);
         EndScope();
+
+        currentFunctionType = enclosingFunctionType;
     }
 
     private void BeginScope()
@@ -196,6 +212,11 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         if (scopes.Count == 0) return;
 
         Dictionary<string, bool> scope = scopes.Peek();
+        if (scope.ContainsKey(name.Lexeme))
+        {   
+            ErrorHandler.Error(name, "Already a variable with this name in this scope.");
+        }
+
         scope[name.Lexeme] = false;
     }
 

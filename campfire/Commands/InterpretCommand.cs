@@ -15,11 +15,24 @@ public class InterpretCommand: ICommand
         {
             var parser = new RecursiveDescentParser(tokens);
             var statements = parser.Parse();
+
+            if (ErrorHandler.HadError)
+            {
+                Console.WriteLine("Interpreter skipped due to Parsing Error");
+                return;
+            }
             
             var interpreter = new Interpreter();
 
             Resolver resolver = new Resolver(interpreter);
             resolver.Resolve(statements);
+            
+            if (ErrorHandler.HadError)
+            {
+                Console.WriteLine("Interpreter skipped due to Resolving Error");
+                return;
+            }
+            
             interpreter.Interpret(statements);
         }    
     }
