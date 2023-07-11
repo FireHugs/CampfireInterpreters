@@ -5,12 +5,14 @@ public partial class Interpreter
 {
     public Environment globals;
     private Environment environment;
+    private Dictionary<Expr, int> locals;
 
     public Interpreter()
     {
         globals = new Environment();
         environment = globals;
         globals.Define("clock", new ClockFunction());
+        locals = new Dictionary<Expr, int>();
     }
     
     public void Interpret(List<Stmt> statements)
@@ -54,5 +56,10 @@ public partial class Interpreter
         {
             this.environment = previous;
         }
+    }
+
+    public void Resolve(Expr expression, int depth)
+    {
+        locals[expression] = depth;
     }
 }

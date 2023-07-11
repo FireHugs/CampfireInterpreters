@@ -92,4 +92,28 @@ public class Environment
 
         throw new RuntimeError(name, $"Undefined variable {name.Lexeme}.");
     }
+
+    public object GetTokenValueAt(int distance, Token name)
+    {
+        return GetAncestor(distance).values[name.Lexeme].Value;
+    }
+
+    public void AssignTokenValueAt(int distance, Token name, object value)
+    {
+        var valueEntry = new ValueEntry();
+        valueEntry.Value = value;
+        
+        GetAncestor(distance).values[name.Lexeme] = valueEntry;
+    }
+
+    private Environment GetAncestor(int distance)
+    {
+        var environment = this;
+        for (int i = 0; i < distance; i++)
+        {
+            environment = environment.enclosingEnvironment;
+        }
+
+        return environment;
+    }
 }

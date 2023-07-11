@@ -7,7 +7,13 @@ public partial class Interpreter: Expr.Visitor<object>
     public object VisitAssignExpr(Assign expr)
     {
         var value = EvaluateExpression(expr.value);
-        environment.AssignTokenValue(expr.name, value);
+
+        int distance;
+        if (locals.TryGetValue(expr, out distance))
+        {
+            environment.AssignTokenValueAt(distance, expr.name, value);
+        }
+        
         return value;
     }
 
@@ -123,7 +129,7 @@ public partial class Interpreter: Expr.Visitor<object>
 
     public object VisitVariableExpr(Variable expr)
     {
-        return environment.GetTokenValue(expr.name);
+        return LookUpVariable(expr.name, expr);
     }
     
     private Object EvaluateExpression(Expr expression)
@@ -155,5 +161,16 @@ public partial class Interpreter: Expr.Visitor<object>
         if (obj == null) return false;
         if (obj is bool b) return b;
         return true;
+    }
+
+    private object LookUpVariable(Token name, Expr expression)
+    {
+        int distance;
+        if (locals.TryGetValue(expression, out distance))
+        {
+            return environment.GetTokenValueAt(distance, name);
+        }
+        
+        return globals.GetTokenValue(name);
     }
 }

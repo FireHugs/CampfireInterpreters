@@ -17,6 +17,9 @@ public class InterpretCommand: ICommand
             var statements = parser.Parse();
             
             var interpreter = new Interpreter();
+
+            Resolver resolver = new Resolver(interpreter);
+            resolver.Resolve(statements);
             interpreter.Interpret(statements);
         }    
     }
