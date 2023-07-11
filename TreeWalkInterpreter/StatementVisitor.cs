@@ -11,7 +11,15 @@ public partial class Interpreter: Stmt.Visitor<object>
     public object VisitClassStmt(Class stmt)
     {
         environment.Define(stmt.name.Lexeme, null);
-        var classDefinition = new ClassDefinition(stmt.name.Lexeme);
+
+        var methods = new Dictionary<string, RuntimeFunction>();
+        foreach (var method in stmt.methods)
+        {
+            var function = new RuntimeFunction(method, environment);
+            methods[method.name.Lexeme] = function;
+        }
+        
+        var classDefinition = new ClassDefinition(stmt.name.Lexeme, methods);
         environment.AssignTokenValue(stmt.name, classDefinition);
         return null;
     }
@@ -29,7 +37,7 @@ public partial class Interpreter: Stmt.Visitor<object>
 
     public object VisitFunctionStmt(Function stmt)
     {
-        var function = new UserFunction(stmt, environment);
+        var function = new RuntimeFunction(stmt, environment);
         environment.Define(stmt.name.Lexeme, function);
         return null;
     }

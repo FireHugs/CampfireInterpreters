@@ -1,11 +1,11 @@
 ﻿namespace Campfire.TreeWalkInterpreter;
 
-public class UserFunction: ICallable
+public class RuntimeFunction: ICallable
 {
     private readonly Function declaration;
     private readonly Environment closure;
 
-    public UserFunction(Function declaration, Environment closure)
+    public RuntimeFunction(Function declaration, Environment closure)
     {
         this.declaration = declaration;
         this.closure = closure;

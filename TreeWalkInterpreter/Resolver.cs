@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using System.Data;
+using System.Net.Mail;
 
 namespace Campfire.TreeWalkInterpreter;
 
@@ -7,7 +8,8 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
     private enum FunctionType
     {
         None, 
-        Function
+        Function,
+        Method
     }
     private readonly Interpreter interpreter;
     private Stack<Dictionary<string, bool>> scopes;
@@ -51,6 +53,12 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         return null;
     }
 
+    public object VisitGetExpr(Get expr)
+    {
+        Resolve(expr.obj);
+        return null;
+    }
+
     public object VisitGroupingExpr(Grouping expr)
     {
         Resolve(expr.Expression);
@@ -66,6 +74,13 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
     {
         Resolve(expr.left);
         Resolve(expr.right);
+        return null;
+    }
+
+    public object VisitSetExpr(Set expr)
+    {
+        Resolve(expr.value);
+        Resolve(expr.obj);
         return null;
     }
 
@@ -92,6 +107,13 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
     {
         Declare(stmt.name);
         Define(stmt.name);
+        
+        foreach(var method in stmt.methods)
+        {
+            FunctionType declarationType = FunctionType.Method;
+            ResolveFunction(method, declarationType);
+        }
+        
         return null;
     }
 

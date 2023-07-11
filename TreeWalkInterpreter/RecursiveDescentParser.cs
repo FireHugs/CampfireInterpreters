@@ -35,12 +35,16 @@ public class RecursiveDescentParser
             var equals = Previous();
             var value = ParseAssignment();
 
-            if (expression is Variable)
+            if (expression is Variable variable)
             {
-                var name = ((Variable)expression).name;
+                var name = variable.name;
                 return new Assign(name, value);
             }
-            
+            else if (expression is Get get)
+            {
+                return new Set(get.obj, get.name, value);
+            }
+
             ErrorHandler.Error(equals, "Invalid assignment target.");
         }
 
@@ -191,6 +195,11 @@ public class RecursiveDescentParser
             if (Match(TokenType.LeftParen))
             {
                 expression = FinishCall(expression);
+            }
+            else if (Match(TokenType.Dot))
+            {
+                var name = Consume(TokenType.Identifier, "Expect property name after '.'.");
+                expression = new Get(expression, name);
             }
             else
             {

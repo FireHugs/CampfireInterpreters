@@ -1,19 +1,10 @@
-﻿var a = "global";
+﻿class Fart
 {
-    fun showA()
+    Burp()
     {
-        print a;
+        print "Burp";
     }
-    
-    showA();
-    var a = "block";
-    showA();
 }
 
-class fart
-{
-    loudly(volume)
-    {
-        print volume;
-    }
-}
+var instance = Fart();
+instance.Burp();

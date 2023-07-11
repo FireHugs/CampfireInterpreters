@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 
 namespace Campfire.TreeWalkInterpreter;
 
@@ -101,6 +102,17 @@ public partial class Interpreter: Expr.Visitor<object>
         return function.Call(this, arguments);
     }
 
+    public object VisitGetExpr(Get expr)
+    {
+        object obj = EvaluateExpression(expr.obj);
+        if (obj is ClassInstance instance)
+        {
+            return instance.Get(expr.name);
+        }
+
+        throw new RuntimeError(expr.name, "Only instances have properties.");
+    }
+
     public object VisitGroupingExpr(Grouping expr)
     {
         return EvaluateExpression(expr.Expression);
@@ -125,6 +137,20 @@ public partial class Interpreter: Expr.Visitor<object>
         }
 
         return EvaluateExpression(expr.right);
+    }
+
+    public object VisitSetExpr(Set expr)
+    {
+        var obj = EvaluateExpression(expr.obj);
+
+        if (obj is not ClassInstance instance)
+        {
+            throw new RuntimeError(expr.name, "Only instances have fields.");
+        }
+
+        object value = EvaluateExpression(expr.value);
+        instance.Set(expr.name, value);
+        return value;
     }
 
     public object VisitVariableExpr(Variable expr)
