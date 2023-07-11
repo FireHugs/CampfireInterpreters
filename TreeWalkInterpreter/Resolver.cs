@@ -88,6 +88,13 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         return null;
     }
 
+    public object VisitClassStmt(Class stmt)
+    {
+        Declare(stmt.name);
+        Define(stmt.name);
+        return null;
+    }
+
     public object VisitExpressionStmt(Expression stmt)
     {
         Resolve(stmt.expression);

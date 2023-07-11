@@ -415,6 +415,7 @@ public class RecursiveDescentParser
     {
         try
         {
+            if (Match(TokenType.Class)) return ParseClassDeclaration();
             if (Match(TokenType.Fun)) return ParseFunctionDeclaration("function");
             if (Match(TokenType.Var)) return ParseVarDeclaration();
             return ParseStatement();
@@ -424,6 +425,22 @@ public class RecursiveDescentParser
             Synchronize();
             return null;
         }
+    }
+
+    private Stmt ParseClassDeclaration()
+    {
+        var name = Consume(TokenType.Identifier, "Expect class name");
+        Consume(TokenType.LeftBrace, "Expect '{' before class body.");
+
+        var methods = new List<Function>();
+        while (!Check(TokenType.RightBrace) && !IsAtEnd())
+        {
+            methods.Add((Function)ParseFunctionDeclaration("method"));
+        }
+
+        Consume(TokenType.RightBrace, "Expect '}' after class body.");
+
+        return new Class(name, methods);
     }
 
     private Stmt ParseFunctionDeclaration(string kind)

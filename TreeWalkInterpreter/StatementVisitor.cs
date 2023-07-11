@@ -8,6 +8,14 @@ public partial class Interpreter: Stmt.Visitor<object>
         return null;
     }
 
+    public object VisitClassStmt(Class stmt)
+    {
+        environment.Define(stmt.name.Lexeme, null);
+        var classDefinition = new ClassDefinition(stmt.name.Lexeme);
+        environment.AssignTokenValue(stmt.name, classDefinition);
+        return null;
+    }
+
     public object VisitExpressionStmt(Expression stmt)
     {
         var value = EvaluateExpression(stmt.expression);

@@ -9,3 +9,11 @@
     var a = "block";
     showA();
 }
+
+class fart
+{
+    loudly(volume)
+    {
+        print volume;
+    }
+}
