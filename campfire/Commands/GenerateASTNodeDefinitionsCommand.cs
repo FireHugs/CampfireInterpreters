@@ -25,6 +25,7 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             "Literal : Object Value",
             "Logical : Expr left, Token Op, Expr right",
             "Set: Expr obj, Token name, Expr value",
+            "This : Token keyword",
             "Variable : Token name"
         });
         

@@ -242,6 +242,11 @@ public class RecursiveDescentParser
             return new Literal(Previous().Literal);
         }
 
+        if (Match(TokenType.This))
+        {
+            return new This(Previous());
+        }
+
         if (Match(TokenType.Identifier))
         {
             return new Variable(Previous());

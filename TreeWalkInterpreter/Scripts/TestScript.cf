@@ -1,10 +1,12 @@
-﻿class Fart
+﻿class Cake
 {
-    Burp()
+    taste()
     {
-        print "Burp";
+        var adjective = "delicious";
+        print "The " + this.flavor + " cake is " + adjective + "!";
     }
 }
 
-var instance = Fart();
-instance.Burp();
+var cake = Cake();
+cake.flavor = "German Chocolate";
+cake.taste();

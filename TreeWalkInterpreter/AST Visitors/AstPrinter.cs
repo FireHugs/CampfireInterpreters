@@ -55,6 +55,11 @@ public class AstPrinter: Expr.Visitor<string>
         throw new NotImplementedException();
     }
 
+    public string VisitThisExpr(This expr)
+    {
+        throw new NotImplementedException();
+    }
+
     public string VisitVariableExpr(Variable expr)
     {
         throw new NotImplementedException();

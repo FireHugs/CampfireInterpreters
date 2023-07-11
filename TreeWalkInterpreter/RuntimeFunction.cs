@@ -37,4 +37,11 @@ public class RuntimeFunction: ICallable
     {
         return $"<fun {declaration.name.Lexeme}>";
     }
+
+    public RuntimeFunction Bind(ClassInstance instance)
+    {
+        var environment = new Environment(closure);
+        environment.Define("this", instance);
+        return new RuntimeFunction(declaration, environment);
+    }
 }

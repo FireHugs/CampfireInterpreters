@@ -21,7 +21,7 @@ public class ClassInstance
         RuntimeFunction? method = definition.FindMethod(name.Lexeme);
         if (method != null)
         {
-            return method;
+            return method.Bind(this);
         }
         
         throw new RuntimeError(name, $"Undefined property {name.Lexeme}.");

@@ -84,6 +84,12 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         return null;
     }
 
+    public object VisitThisExpr(This expr)
+    {
+        ResolveLocal(expr, expr.keyword);
+        return null;
+    }
+
     public object VisitVariableExpr(Variable expr)
     {
         if (scopes.Count > 0 && scopes.Peek().ContainsKey(expr.name.Lexeme) && scopes.Peek()[expr.name.Lexeme] == false)
@@ -108,11 +114,16 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         Declare(stmt.name);
         Define(stmt.name);
         
+        BeginScope();
+        scopes.Peek()["this"] = true;
+        
         foreach(var method in stmt.methods)
         {
             FunctionType declarationType = FunctionType.Method;
             ResolveFunction(method, declarationType);
         }
+        
+        EndScope();
         
         return null;
     }

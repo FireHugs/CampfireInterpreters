@@ -28,7 +28,9 @@ public partial class Interpreter: Stmt.Visitor<object>
     {
         var value = EvaluateExpression(stmt.expression);
         if (stmt.expression is not Assign && 
-            stmt.expression is not Call)
+            stmt.expression is not Call &&
+            stmt.expression is not Get &&
+            stmt.expression is not Set)
         {
             Console.WriteLine(Stringify(value));
         }
