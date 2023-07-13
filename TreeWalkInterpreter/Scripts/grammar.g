@@ -24,6 +24,6 @@ factor -> unary ( ( "/" | "*" ) unary)*;
 unary -> ( "!" | "-" ) unary | call ;
 call -> primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 arguments -> expression ( "," expression )* ;
-primary -> literal | grouping | IDENTIFIER; 
+primary -> literal | grouping | IDENTIFIER | "super" "." IDENTIFIER; 
 literal -> NUMBER | STRING| "true" | "false" | "nil" ;
 grouping -> "(" expression ")" ;

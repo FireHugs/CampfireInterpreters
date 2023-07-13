@@ -29,11 +29,11 @@ public class Environment
     }
     
     private readonly Dictionary<string, ValueEntry> values = new();
-    private readonly Environment? enclosingEnvironment;
+    public Environment? EnclosingEnvironment { get; }
 
     public Environment(Environment? enclosingEnvironment = null)
     {
-        this.enclosingEnvironment = enclosingEnvironment;
+        EnclosingEnvironment = enclosingEnvironment;
     }
 
     public void Declare(string name)
@@ -65,9 +65,9 @@ public class Environment
             return;
         }
 
-        if (enclosingEnvironment != null)
+        if (EnclosingEnvironment != null)
         {
-            enclosingEnvironment.AssignTokenValue(name, value);
+            EnclosingEnvironment.AssignTokenValue(name, value);
             return;
         }
         
@@ -85,9 +85,9 @@ public class Environment
             return values[name.Lexeme].Value;
         }
         
-        if (enclosingEnvironment != null)
+        if (EnclosingEnvironment != null)
         {
-            return enclosingEnvironment.GetTokenValue(name);
+            return EnclosingEnvironment.GetTokenValue(name);
         }
 
         throw new RuntimeError(name, $"Undefined variable {name.Lexeme}.");
@@ -116,7 +116,7 @@ public class Environment
         var environment = this;
         for (int i = 0; i < distance; i++)
         {
-            environment = environment.enclosingEnvironment;
+            environment = environment.EnclosingEnvironment;
         }
 
         return environment;

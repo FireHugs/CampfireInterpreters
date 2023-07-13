@@ -16,6 +16,7 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
     private enum ClassType
     {
         None,
+        Subclass,
         Class
     }
     
@@ -94,6 +95,21 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         return null;
     }
 
+    public object VisitSuperExpr(Super expr)
+    {
+        if (currentClassType == ClassType.None)
+        {
+            ErrorHandler.Error(expr.keyword, "Can't user 'super' outside of a class.");
+        }
+        else if (currentClassType != ClassType.Subclass)
+        {
+            ErrorHandler.Error(expr.keyword, "Can't use 'super' in a class with no superclass");
+        }
+            
+        ResolveLocal(expr, expr.keyword);
+        return null;
+    }
+
     public object VisitThisExpr(This expr)
     {
         if (currentClassType == ClassType.None)
@@ -134,14 +150,19 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
 
         if (stmt.superclass != null)
         {
+            currentClassType = ClassType.Subclass;
+            
             if (stmt.name.Lexeme.Equals(stmt.superclass.name.Lexeme))
             {
                 ErrorHandler.Error(stmt.superclass.name, "A class can't inherit from itself");
             }
             
             Resolve(stmt.superclass);
+            
+            BeginScope();
+            scopes.Peek()["super"] = true;
         }
-        
+
         BeginScope();
         scopes.Peek()["this"] = true;
         
@@ -152,6 +173,11 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         }
         
         EndScope();
+        
+        if (stmt.superclass != null)
+        {
+            EndScope();
+        }
 
         currentClassType = enclosingClassType;
         
@@ -245,10 +271,10 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
 
     private void ResolveLocal(Expr expr, Token name)
     {
+        var scopeArray = scopes.ToArray();
         for (int i = 0; i < scopes.Count; i++)
         {
-            var currentScope = scopes.ToArray()[i];
-            if (currentScope.ContainsKey(name.Lexeme))
+            if (scopeArray[i].ContainsKey(name.Lexeme))
             {
                 interpreter.Resolve(expr, i);
             }

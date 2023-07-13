@@ -10,8 +10,6 @@ public partial class Interpreter: Stmt.Visitor<object>
 
     public object VisitClassStmt(Class stmt)
     {
-        environment.Define(stmt.name.Lexeme, null);
-
         object superclass = null;
         if (stmt.superclass != null)
         {
@@ -20,6 +18,14 @@ public partial class Interpreter: Stmt.Visitor<object>
             {
                 throw new RuntimeError(stmt.superclass.name, "Superclass must be a class.");
             }
+        }
+        
+        environment.Define(stmt.name.Lexeme, null);
+
+        if (stmt.superclass != null)
+        {
+            environment = new Environment(environment);
+            environment.Define("super", superclass);
         }
 
         var methods = new Dictionary<string, RuntimeFunction>();
@@ -30,6 +36,12 @@ public partial class Interpreter: Stmt.Visitor<object>
         }
         
         var classDefinition = new ClassDefinition(stmt.name.Lexeme, (ClassDefinition)superclass, methods);
+
+        if (superclass != null)
+        {
+            environment = environment.EnclosingEnvironment;
+        }
+        
         environment.AssignTokenValue(stmt.name, classDefinition);
         return null;
     }
@@ -122,5 +134,22 @@ public partial class Interpreter: Stmt.Visitor<object>
         }
 
         return obj.ToString();
+    }
+
+    public object VisitSuperExpr(Super expr)
+    {
+        int distance = locals[expr];
+        var superClass = (ClassDefinition)environment.GetTokenValueAt(distance, "super");
+
+        ClassInstance obj = (ClassInstance)environment.GetTokenValueAt(distance - 1, "this");
+
+        RuntimeFunction method = superClass.FindMethod(expr.method.Lexeme);
+
+        if (method == null)
+        {
+            throw new RuntimeError(expr.method, $"Undefined property {expr.method.Lexeme}.");
+        }
+        
+        return method.Bind(obj);
     }
 }

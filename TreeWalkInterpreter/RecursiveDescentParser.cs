@@ -247,6 +247,14 @@ public class RecursiveDescentParser
             return new This(Previous());
         }
 
+        if (Match(TokenType.Super))
+        {
+            Token keyword = Previous();
+            Consume(TokenType.Dot, "Expect '.' after 'super'.");
+            Token method = Consume(TokenType.Identifier, "Expect superclass method name.");
+            return new Super(keyword, method);
+        }
+
         if (Match(TokenType.Identifier))
         {
             return new Variable(Previous());
