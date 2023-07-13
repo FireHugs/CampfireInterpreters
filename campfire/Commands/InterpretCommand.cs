@@ -1,13 +1,10 @@
 ﻿using Campfire.TreeWalkInterpreter;
-using Campfire.TreeWalkInterpreter.AST_Visitors;
 
 namespace Campfire.campfire;
 
-public class InterpretCommand: ICommand
+public static class InterpretCommand
 {
-    public string Name => "run";
-    
-    public void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode)
+    public static void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode, bool printToConsole)
     {
         var tokens = CommandHelpers.LexFile(args, ref exitCode);
 

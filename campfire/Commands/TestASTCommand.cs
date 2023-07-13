@@ -1,13 +1,11 @@
-﻿using System.Linq.Expressions;
-using Campfire.TreeWalkInterpreter;
+﻿using Campfire.TreeWalkInterpreter;
 using Campfire.TreeWalkInterpreter.AST_Visitors;
 
 namespace Campfire.campfire;
 
-public class TestASTCommand: ICommand
+public static class TestASTCommand
 {
-    public string Name => "testAST";
-    public void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode)
+    public static void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode, bool printToConsole)
     {
         var expression = new Binary(
             new Unary(

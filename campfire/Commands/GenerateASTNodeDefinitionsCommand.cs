@@ -2,11 +2,9 @@
 
 namespace Campfire.campfire;
 
-public class GenerateASTNodeDefinitionsCommand: ICommand
+public static class GenerateASTNodeDefinitionsCommand
 {
-    public string Name => "generateAST";
-
-    public void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode)
+    public static void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode, bool printToConsole)
     {
         if (args.Length > 0)
         {
@@ -30,6 +28,11 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             "Variable : Token name"
         });
         
+        if (printToConsole)
+        {
+            Console.WriteLine("> Expressions Generated");
+        }
+        
         ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Generated", "Stmt", new List<string>
         {
             "Block : List<Stmt> statements",
@@ -42,5 +45,11 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             "Var : Token name, Expr initializer",
             "While : Expr condition, Stmt body"
         });
+
+        if (printToConsole)
+        {
+            Console.WriteLine("> Statements Generated");
+            Console.WriteLine("> AST Node Definitions successfully generated");
+        }
     }
 }

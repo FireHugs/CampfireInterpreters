@@ -1,10 +1,10 @@
-﻿using System.Text;
-
-namespace Campfire.campfire;
+﻿namespace Campfire.campfire;
 
 internal static class Program
 {
-    private static List<ICommand> commandList = new();
+    private static Dictionary<string, ICommand> commands = new();
+
+    public delegate void ICommand(string[] args, ref MessageHandler.ExitCodes exitCode, bool printToConsole);
     
     private static void Main(string[] args)
     {
@@ -20,20 +20,20 @@ internal static class Program
         if (commandName == "help")
         {
             Console.WriteLine("Commands:");
-            foreach (var command in commandList)
+            foreach (var command in commands)
             {
-                Console.WriteLine($"  {command.Name}");
+                Console.WriteLine($"  {command.Key}");
             }
             MessageHandler.Exit(MessageHandler.ExitCodes.Successful);
         }
         
-        foreach (var command in commandList)
+        foreach (var command in commands)
         {
-            if (command.Name == commandName)
+            if (command.Key == commandName)
             {
                 MessageHandler.ExitCodes exitCode = MessageHandler.ExitCodes.Successful;
                 
-                command.ExecuteCommand(args[Range.StartAt(1)], ref exitCode);
+                commands[commandName](args[Range.StartAt(1)], ref exitCode, true);
                 MessageHandler.Exit(exitCode);
             }
         }
@@ -41,10 +41,10 @@ internal static class Program
 
     private static void BuildCommandList()
     {
-        commandList.Add(new GenerateASTNodeDefinitionsCommand());
-        commandList.Add(new LexCommand());
-        commandList.Add(new TestASTCommand());
-        commandList.Add(new ParseCommand());
-        commandList.Add(new InterpretCommand());
+        commands.Add("generateAST", GenerateASTNodeDefinitionsCommand.ExecuteCommand);
+        commands.Add("lex", LexCommand.ExecuteCommand);
+        commands.Add("testAST", TestASTCommand.ExecuteCommand);
+        commands.Add("parse", ParseCommand.ExecuteCommand);
+        commands.Add("run", InterpretCommand.ExecuteCommand);
     }
 }

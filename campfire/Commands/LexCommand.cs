@@ -1,22 +1,18 @@
-﻿using Campfire.TreeWalkInterpreter;
+﻿namespace Campfire.campfire;
 
-namespace Campfire.campfire;
-
-public class LexCommand: ICommand
+public static class LexCommand
 {
-    public string Name => "lex";
-
-    public void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode)
+    public static void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode, bool printToConsole)
     {
         var tokens = CommandHelpers.LexFile(args, ref exitCode);
 
-        if (exitCode == MessageHandler.ExitCodes.Successful)
+        if (printToConsole && exitCode == MessageHandler.ExitCodes.Successful )
         {
-            Console.Write("Lexed Tokens: ");
+            Console.Write("> Lexed Tokens: ");
             foreach (var token in tokens)
             {
-                Console.Write($" {token} |");
-            }    
+                Console.Write($" [{token}]");
+            }
         }
     }
 }
