@@ -2,10 +2,10 @@
 
 public class RecursiveDescentParser: IParser
 {
-    private readonly List<Token> tokens;
+    private readonly List<Token>? tokens;
     private int current; 
 
-    public RecursiveDescentParser(List<Token> tokens)
+    public RecursiveDescentParser(List<Token>? tokens)
     {
         this.tokens = tokens;
     }

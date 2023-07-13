@@ -5,7 +5,7 @@ namespace Campfire.TreeWalkInterpreter;
 public class ManualLexer: ILexer
 {
     private string source;
-    private List<Token> tokens;
+    private List<Token>? tokens;
 
     private int lexStart;
     private int lexCurrent;
@@ -16,7 +16,7 @@ public class ManualLexer: ILexer
         this.source = source;
     }
 
-    public List<Token> ScanTokens()
+    public List<Token>? ScanTokens()
     {
         tokens = new List<Token>();
 

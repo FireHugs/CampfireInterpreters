@@ -26,7 +26,7 @@ public static class LexCommand
         }
     }
 
-    public static List<Token> ExecuteWork(string[] args, ref MessageHandler.ExitCodes exitCode)
+    public static List<Token>? ExecuteWork(string[] args, ref MessageHandler.ExitCodes exitCode)
     {
         ILexer? lexer = null;
 

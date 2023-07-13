@@ -31,7 +31,7 @@ public static class ParseCommand
         }
     }
 
-    public static List<Stmt> ExecuteWork(List<Token> tokens, ref MessageHandler.ExitCodes exitCode)
+    public static List<Stmt> ExecuteWork(List<Token>? tokens, ref MessageHandler.ExitCodes exitCode)
     {
         var parser = new RecursiveDescentParser(tokens);
         return parser.Parse();

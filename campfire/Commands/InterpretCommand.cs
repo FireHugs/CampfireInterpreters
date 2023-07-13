@@ -1,4 +1,5 @@
-﻿using Campfire.TreeWalkInterpreter;
+﻿using Campfire.campfire.Commands;
+using Campfire.TreeWalkInterpreter;
 
 namespace Campfire.campfire;
 
@@ -10,8 +11,7 @@ public static class InterpretCommand
 
         if (exitCode == MessageHandler.ExitCodes.Successful)
         {
-            var parser = new RecursiveDescentParser(tokens);
-            var statements = parser.Parse();
+            var statements = ParseCommand.ExecuteWork(tokens, ref exitCode);
 
             if (ErrorHandler.HadError)
             {

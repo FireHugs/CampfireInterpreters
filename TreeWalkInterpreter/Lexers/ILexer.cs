@@ -2,5 +2,5 @@
 
 public interface ILexer
 {
-    public List<Token> ScanTokens();
+    public List<Token>? ScanTokens();
 }
