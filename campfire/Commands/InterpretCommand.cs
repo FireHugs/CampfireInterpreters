@@ -6,7 +6,7 @@ public static class InterpretCommand
 {
     public static void ExecuteCommand(string[] args, ref MessageHandler.ExitCodes exitCode, bool printToConsole)
     {
-        var tokens = CommandHelpers.LexFile(args, ref exitCode);
+        var tokens = LexCommand.ExecuteWork(args, ref exitCode);
 
         if (exitCode == MessageHandler.ExitCodes.Successful)
         {

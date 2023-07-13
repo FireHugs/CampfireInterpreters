@@ -1,7 +1,11 @@
-﻿namespace Campfire.campfire;
+﻿using Campfire.campfire.Commands;
+
+namespace Campfire.campfire;
 
 internal static class Program
 {
+    public static string ProjectScriptPath = "../../../../TreeWalkInterpreter";
+    
     private static Dictionary<string, ICommand> commands = new();
 
     public delegate void ICommand(string[] args, ref MessageHandler.ExitCodes exitCode, bool printToConsole);
