@@ -4,11 +4,13 @@ public class RuntimeFunction: ICallable
 {
     private readonly Function declaration;
     private readonly Environment closure;
+    private bool isInitializer;
 
-    public RuntimeFunction(Function declaration, Environment closure)
+    public RuntimeFunction(Function declaration, Environment closure, bool isInitializer)
     {
         this.declaration = declaration;
         this.closure = closure;
+        this.isInitializer = isInitializer;
     }
     
     public object Call(Interpreter interpreter, List<object> arguments)
@@ -25,9 +27,10 @@ public class RuntimeFunction: ICallable
         }
         catch (Return returnValue)
         {
-            return returnValue.Value;
+            return isInitializer ? closure.GetTokenValueAt(0, "this"): returnValue.Value;
         }
-        
+
+        if (isInitializer) return closure.GetTokenValueAt(0, "this");
         return null;
     }
 
@@ -42,6 +45,6 @@ public class RuntimeFunction: ICallable
     {
         var environment = new Environment(closure);
         environment.Define("this", instance);
-        return new RuntimeFunction(declaration, environment);
+        return new RuntimeFunction(declaration, environment, isInitializer);
     }
 }

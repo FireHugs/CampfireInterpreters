@@ -97,6 +97,11 @@ public class Environment
     {
         return GetAncestor(distance).values[name.Lexeme].Value;
     }
+    
+    public object GetTokenValueAt(int distance, string name)
+    {
+        return GetAncestor(distance).values[name].Value;
+    }
 
     public void AssignTokenValueAt(int distance, Token name, object value)
     {

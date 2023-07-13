@@ -9,7 +9,8 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
     {
         None, 
         Function,
-        Method
+        Method,
+        Initializer
     }
 
     private enum ClassType
@@ -136,7 +137,7 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         
         foreach(var method in stmt.methods)
         {
-            FunctionType declarationType = FunctionType.Method;
+            FunctionType declarationType =  method.name.Lexeme.Equals("init") ? FunctionType.Initializer: FunctionType.Method;
             ResolveFunction(method, declarationType);
         }
         
@@ -180,9 +181,14 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
     {
         if (currentFunctionType == FunctionType.None)
         {
-            ErrorHandler.Error(stmt.keyword, "Can't return from top-level code");
+            ErrorHandler.Error(stmt.keyword, "Can't return from top-level code.");
+        }
+        if (currentFunctionType == FunctionType.Initializer)
+        {
+            ErrorHandler.Error(stmt.keyword, "Can't return from initializer.");
         }
         
+
         if (stmt.value != null)
         {
             Resolve(stmt.value);

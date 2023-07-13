@@ -15,7 +15,7 @@ public partial class Interpreter: Stmt.Visitor<object>
         var methods = new Dictionary<string, RuntimeFunction>();
         foreach (var method in stmt.methods)
         {
-            var function = new RuntimeFunction(method, environment);
+            var function = new RuntimeFunction(method, environment, method.name.Lexeme.Equals("init"));
             methods[method.name.Lexeme] = function;
         }
         
@@ -39,7 +39,7 @@ public partial class Interpreter: Stmt.Visitor<object>
 
     public object VisitFunctionStmt(Function stmt)
     {
-        var function = new RuntimeFunction(stmt, environment);
+        var function = new RuntimeFunction(stmt, environment, false);
         environment.Define(stmt.name.Lexeme, function);
         return null;
     }

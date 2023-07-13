@@ -19,10 +19,21 @@ public class ClassDefinition: ICallable
     public object Call(Interpreter interpreter, List<object> arguments)
     {
         var instance = new ClassInstance(this);
+        
+        var initializer = FindMethod("init");
+        initializer?.Bind(instance).Call(interpreter, arguments);
+
         return instance;
     }
 
-    public int Arity => 0;
+    public int Arity
+    {
+        get
+        {
+            var initializer = FindMethod("init");
+            return initializer?.Arity ?? 0;
+        }
+    }
 
     public RuntimeFunction? FindMethod(string name)
     {
