@@ -12,6 +12,16 @@ public partial class Interpreter: Stmt.Visitor<object>
     {
         environment.Define(stmt.name.Lexeme, null);
 
+        object superclass = null;
+        if (stmt.superclass != null)
+        {
+            superclass = EvaluateExpression(stmt.superclass);
+            if (superclass is not ClassDefinition)
+            {
+                throw new RuntimeError(stmt.superclass.name, "Superclass must be a class.");
+            }
+        }
+
         var methods = new Dictionary<string, RuntimeFunction>();
         foreach (var method in stmt.methods)
         {
@@ -19,7 +29,7 @@ public partial class Interpreter: Stmt.Visitor<object>
             methods[method.name.Lexeme] = function;
         }
         
-        var classDefinition = new ClassDefinition(stmt.name.Lexeme, methods);
+        var classDefinition = new ClassDefinition(stmt.name.Lexeme, (ClassDefinition)superclass, methods);
         environment.AssignTokenValue(stmt.name, classDefinition);
         return null;
     }

@@ -4,10 +4,12 @@ public class ClassDefinition: ICallable
 {
     public string Name { get; }
     private Dictionary<string, RuntimeFunction> methods;
+    private ClassDefinition superClass;
 
-    public ClassDefinition(string name, Dictionary<string, RuntimeFunction> methods)
+    public ClassDefinition(string name, ClassDefinition superclass, Dictionary<string, RuntimeFunction> methods)
     {
         Name = name;
+        this.superClass = superclass;
         this.methods = methods;
     }
 
@@ -40,6 +42,11 @@ public class ClassDefinition: ICallable
         if (methods.ContainsKey(name))
         {
             return methods[name];
+        }
+
+        if (superClass != null)
+        {
+            return superClass.FindMethod(name);
         }
 
         return null;

@@ -1,12 +1,7 @@
-﻿class Cake
+﻿class Parent
 {
-    taste()
-    {
-        var adjective = "delicious";
-        print "The " + this.flavor + " cake is " + adjective + "!";
-    }
 }
 
-var cake = Cake();
-cake.flavor = "German Chocolate";
-cake.taste();
+class Child < Fart
+{
+}

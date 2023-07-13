@@ -444,6 +444,14 @@ public class RecursiveDescentParser
     private Stmt ParseClassDeclaration()
     {
         var name = Consume(TokenType.Identifier, "Expect class name");
+
+        Variable superClass = null;
+        if (Match(TokenType.Less))
+        {
+            Consume(TokenType.Identifier, "Expect superclass name.");
+            superClass = new Variable(Previous());
+        }
+        
         Consume(TokenType.LeftBrace, "Expect '{' before class body.");
 
         var methods = new List<Function>();
@@ -454,7 +462,7 @@ public class RecursiveDescentParser
 
         Consume(TokenType.RightBrace, "Expect '}' after class body.");
 
-        return new Class(name, methods);
+        return new Class(name, superClass, methods);
     }
 
     private Stmt ParseFunctionDeclaration(string kind)

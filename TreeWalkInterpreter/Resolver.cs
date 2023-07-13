@@ -131,6 +131,16 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         
         Declare(stmt.name);
         Define(stmt.name);
+
+        if (stmt.superclass != null)
+        {
+            if (stmt.name.Lexeme.Equals(stmt.superclass.name.Lexeme))
+            {
+                ErrorHandler.Error(stmt.superclass.name, "A class can't inherit from itself");
+            }
+            
+            Resolve(stmt.superclass);
+        }
         
         BeginScope();
         scopes.Peek()["this"] = true;
