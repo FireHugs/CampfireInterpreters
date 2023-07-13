@@ -18,7 +18,7 @@ public class ClassDefinition: ICallable
         return Name;
     }
 
-    public object Call(Interpreter interpreter, List<object> arguments)
+    public object Call(TreeWalkInterpreter interpreter, List<object> arguments)
     {
         var instance = new ClassInstance(this);
         

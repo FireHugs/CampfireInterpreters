@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Campfire.TreeWalkInterpreter;
 
-public partial class Interpreter: Expr.Visitor<object>
+public partial class TreeWalkInterpreter: Expr.Visitor<object>
 {
     public object VisitAssignExpr(Assign expr)
     {

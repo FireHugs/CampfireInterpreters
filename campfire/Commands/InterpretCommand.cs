@@ -22,7 +22,7 @@ public class InterpretCommand: ICommand
                 return;
             }
             
-            var interpreter = new Interpreter();
+            var interpreter = new TreeWalkInterpreter.TreeWalkInterpreter();
 
             Resolver resolver = new Resolver(interpreter);
             resolver.Resolve(statements);

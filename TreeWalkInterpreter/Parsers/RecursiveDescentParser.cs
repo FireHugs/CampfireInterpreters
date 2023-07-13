@@ -1,6 +1,6 @@
 ﻿namespace Campfire.TreeWalkInterpreter;
 
-public class RecursiveDescentParser
+public class RecursiveDescentParser: IParser
 {
     private readonly List<Token> tokens;
     private int current; 

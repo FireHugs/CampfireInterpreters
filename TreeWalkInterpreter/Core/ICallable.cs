@@ -2,6 +2,6 @@
 
 public interface ICallable
 {
-    object Call(Interpreter interpreter, List<object> arguments);
+    object Call(TreeWalkInterpreter interpreter, List<object> arguments);
     int Arity { get; }
 }

@@ -1,13 +1,13 @@
 ﻿using Campfire.TreeWalkInterpreter.Native_Functions;
 namespace Campfire.TreeWalkInterpreter;
 
-public partial class Interpreter
+public partial class TreeWalkInterpreter: IInterpreter
 {
     public Environment globals;
     private Environment environment;
     private Dictionary<Expr, int> locals;
 
-    public Interpreter()
+    public TreeWalkInterpreter()
     {
         globals = new Environment();
         environment = globals;

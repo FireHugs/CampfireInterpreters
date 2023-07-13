@@ -4,7 +4,7 @@ namespace Campfire.campfire;
 
 public static class CommandHelpers
 {
-    private static string defaultSourcePath = "../../../../TreeWalkInterpreter/Scripts/TestScript.cf";
+    private static string defaultSourcePath = "../../../../TreeWalkInterpreter/TestScript.cf";
     
     public static List<Token> LexFile(string[] args, ref MessageHandler.ExitCodes exitCode)
     {

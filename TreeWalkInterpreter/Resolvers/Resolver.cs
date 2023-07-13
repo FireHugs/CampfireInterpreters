@@ -1,9 +1,10 @@
 ﻿using System.Data;
 using System.Net.Mail;
+using Campfire.TreeWalkInterpreter.Resolvers;
 
 namespace Campfire.TreeWalkInterpreter;
 
-public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
+public class Resolver : IResolver, Expr.Visitor<object>, Stmt.Visitor<object>
 {
     private enum FunctionType
     {
@@ -20,13 +21,13 @@ public class Resolver : Expr.Visitor<object>, Stmt.Visitor<object>
         Class
     }
     
-    private readonly Interpreter interpreter;
+    private readonly TreeWalkInterpreter interpreter;
     private Stack<Dictionary<string, bool>> scopes;
     
     private FunctionType currentFunctionType = FunctionType.None;
     private ClassType currentClassType = ClassType.None;
 
-    public Resolver(Interpreter interpreter)
+    public Resolver(TreeWalkInterpreter interpreter)
     {
         this.interpreter = interpreter;
         scopes = new Stack<Dictionary<string, bool>>();

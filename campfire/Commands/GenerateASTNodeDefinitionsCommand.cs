@@ -14,7 +14,7 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             return;
         }
         
-        ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Scripts/Generated", "Expr", new List<string>
+        ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Generated", "Expr", new List<string>
         {
             "Assign : Token name, Expr value",
             "Unary : Token Op, Expr Right",
@@ -30,7 +30,7 @@ public class GenerateASTNodeDefinitionsCommand: ICommand
             "Variable : Token name"
         });
         
-        ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Scripts/Generated", "Stmt", new List<string>
+        ASTNodeDefinitionTextEmitGenerator.GenerateNodeDefinition("../../../../TreeWalkInterpreter/Generated", "Stmt", new List<string>
         {
             "Block : List<Stmt> statements",
             "Class : Token name, Variable superclass, List<Function> methods",

@@ -1,6 +1,6 @@
 ﻿namespace Campfire.TreeWalkInterpreter;
 
-public partial class Interpreter: Stmt.Visitor<object>
+public partial class TreeWalkInterpreter: Stmt.Visitor<object>
 {
     public object VisitBlockStmt(Block stmt)
     {

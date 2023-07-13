@@ -4,7 +4,7 @@ public class ClockFunction: ICallable
 {
     int ICallable.Arity => 0;
 
-    public object Call(Interpreter interpreter, List<object> arguments)
+    public object Call(TreeWalkInterpreter interpreter, List<object> arguments)
     {
         return DateTime.Now.Millisecond / 1000.0;
     }
