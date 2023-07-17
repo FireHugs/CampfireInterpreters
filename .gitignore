@@ -5,3 +5,6 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea
 TreeWalkInterpreter/Scripts/Generated
+.vs
+CVM/x64
+x64
