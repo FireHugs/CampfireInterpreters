@@ -3,6 +3,8 @@
 #include "debug.h"
 #include "vm.h"
 
+void pushConstant(Chunk* chunk);
+
 int main()
 {
 	initVM();
@@ -10,9 +12,16 @@ int main()
 	Chunk chunk;
 	initChunk(&chunk);
 
-	int constant = addConstant(&chunk, 1.2);
-	writeChunk(&chunk, OP_CONSTANT, 123);
-	writeChunk(&chunk, constant, 123);
+	pushConstant(&chunk, 1.2);	
+	
+	pushConstant(&chunk, 3.4);
+
+	writeChunk(&chunk, OP_ADD, 123);
+
+	pushConstant(&chunk, 5.6);
+
+	writeChunk(&chunk, OP_DIVIDE, 123);
+	writeChunk(&chunk, OP_NEGATE, 123);
 
 	writeChunk(&chunk, OP_RETURN, 123);
 
@@ -24,4 +33,11 @@ int main()
 	freeChunk(&chunk);
 
 	return 0;
+}
+
+void pushConstant(Chunk* chunk, Value value)
+{
+	int constant = addConstant(chunk, value);
+	writeChunk(chunk, OP_CONSTANT, 123);
+	writeChunk(chunk, constant, 123);
 }
