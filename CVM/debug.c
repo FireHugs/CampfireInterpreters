@@ -9,6 +9,7 @@ void disassembleChunk(Chunk* chunk, const char* name)
 	{
 		offset = disassembleInstruction(chunk, offset);
 	}
+	printf("== chunk end ==\n\n");
 }
 
 int disassembleInstruction(Chunk* chunk, int offset)
