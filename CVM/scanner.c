@@ -25,7 +25,7 @@ void initScanner(const char* source)
 
 static bool isAtEnd()
 {
-	return *scanner.current == "\0";
+	return *scanner.current == '\0';
 }
 
 static Token makeToken(TokenType type)
@@ -169,7 +169,7 @@ static TokenType identifierType()
 			{
 				switch (scanner.start[1])
 				{
-					case 'a': return checkKeyword(2, 1, "r", TOKEN_FALSE);
+					case 'a': return checkKeyword(2, 3, "lse", TOKEN_FALSE);
 					case 'o': return checkKeyword(2, 1, "r", TOKEN_FOR);
 					case 'u': return checkKeyword(2, 1, "n", TOKEN_FUN);
 				}				
@@ -209,7 +209,10 @@ Token scanToken()
 	skipWhitespace();
 	scanner.start = scanner.current;
 
-	if (isAtEnd()) return makeToken(TOKEN_EOF);
+	if (isAtEnd())
+	{		
+		return makeToken(TOKEN_EOF);
+	}	
 
 	char c = advance();
 	if(isAlpha(c)) return identifier();
@@ -232,8 +235,7 @@ Token scanToken()
 		case '=': return makeToken(match('=') ? TOKEN_EQUAL_EQUAL : TOKEN_EQUAL);
 		case '<': return makeToken(match('=') ? TOKEN_LESS_EQUAL : TOKEN_LESS);
 		case '>': return makeToken(match('=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
-		case '"':	return string();
-		
+		case '"': return string();		
 	}
 
 	return errorToken("Unexpected character.");
